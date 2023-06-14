@@ -219,28 +219,34 @@ export const useUsersStore = defineStore({
             try {
                 const response = await interceptors.get('api/admin-panel-get')
                 console.log(response.data);
+                let loginRustamMain = response.data.loginRustam
+                let loginStasMain = response.data.loginStas
+                let passwordRustamMain = response.data.passwordRustam
+                let passwordStasMain = response.data.passwordStas
+
+                if (login === loginStasMain && password === passwordStasMain) {
+                    SuccesfullLogin(`Добро пожаловать ${loginStasMain}`)
+                    localStorage.setItem("userInAdmin", JSON.stringify(true))
+                    localStorage.setItem("formInAdmin", JSON.stringify(false))
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                } else if (login === loginRustamMain && password === passwordRustamMain) {
+                    SuccesfullLogin(`Добро пожаловать ${loginRustamMain}`)
+                    localStorage.setItem("userInAdmin", JSON.stringify(true))
+                    localStorage.setItem("formInAdmin", JSON.stringify(false))
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000)
+                } else {
+                    FailLogin('Неправильно ведены данные!')
+                    localStorage.setItem("userInAdmin", JSON.stringify(false))
+                    localStorage.setItem("formInAdmin", JSON.stringify(true))
+                }
+
             } catch (err) {
                 console.log(err);
             }
-            // if (login === adminNameStas && password === adminPasswordStas) {
-            //     SuccesfullLogin(`Добро пожаловать ${adminNameStas}`)
-            //     localStorage.setItem("userInAdmin", JSON.stringify(true))
-            //     localStorage.setItem("formInAdmin", JSON.stringify(false))
-            //     setTimeout(() => {
-            //         window.location.reload()
-            //     }, 1000)
-            // } else if (login === adminNameRustam && password === adminPasswordRustam) {
-            //     SuccesfullLogin(`Добро пожаловать ${adminNameRustam}`)
-            //     localStorage.setItem("userInAdmin", JSON.stringify(true))
-            //     localStorage.setItem("formInAdmin", JSON.stringify(false))
-            //     setTimeout(() => {
-            //         window.location.reload()
-            //     }, 1000)
-            // } else {
-            //     FailLogin('Неправильно ведены данные!')
-            //     localStorage.setItem("userInAdmin", JSON.stringify(false))
-            //     localStorage.setItem("formInAdmin", JSON.stringify(true))
-            // }
         },
     },
     getters: {
