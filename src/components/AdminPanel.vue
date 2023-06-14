@@ -9,6 +9,7 @@ const adminPasswordTrueStas = ref('123456')
 
 const adminNameTrueRustam = ref('adminRustam')
 const adminPasswordTrueRustam = ref(`123456`)
+
 localStorage.setItem("userInAdmin", JSON.stringify(false))
 localStorage.setItem("formInAdmin", JSON.stringify(true))
 const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
@@ -17,26 +18,8 @@ const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
 
 const username = ref('')
 const password = ref('')
+
 const login = () => {
-  if (username.value === adminNameTrueStas.value && password.value === adminPasswordTrueStas.value) {
-    SuccesfullLogin(`Добро пожаловать ${adminNameTrueStas.value}`)
-    localStorage.setItem("userInAdmin", JSON.stringify(true))
-    localStorage.setItem("formInAdmin", JSON.stringify(false))
-    setTimeout(() => {
-      window.location.reload()
-    }, 1000)
-  } else if (username.value === adminNameTrueRustam.value && password.value === adminPasswordTrueRustam.value) {
-    SuccesfullLogin(`Добро пожаловать ${adminNameTrueRustam.value}`)
-    localStorage.setItem("userInAdmin", JSON.stringify(true))
-    localStorage.setItem("formInAdmin", JSON.stringify(false))
-    setTimeout(() => {
-      window.location.reload()
-    }, 1000)
-  } else {
-    FailLogin('Неправильно ведены данные!')
-    localStorage.setItem("userInAdmin", JSON.stringify(false))
-    localStorage.setItem("formInAdmin", JSON.stringify(true))
-  }
 
 }
 
@@ -79,7 +62,8 @@ const clickInCheck = () => {
       <v-btn type="submit">Login</v-btn>
     </form>
   </div>
-  <div class="blockTrueOrFalse">
+  <div class="blockTrueOrFalse"
+       v-if="trueOrFalse">
     <v-btn @click="clickInCheck()">Показать: {{ componentCheck[0] }}</v-btn>
     <div class="blockUsersOrInstrument">
       <UsersComponent v-if="trueOrFalseUsers"></UsersComponent>
