@@ -12,7 +12,7 @@ const app = createApp(App)
 import Toast from './plugins/toast.js'
 
 // Vuetify
-import { vuetify } from "./plugins/vuetify";
+import { vuetify } from "./plugins/vuetify.js";
 
 // -
 app.use(createPinia())
