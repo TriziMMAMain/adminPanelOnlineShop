@@ -16,7 +16,7 @@ const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
 const username = ref('')
 const password = ref('')
 
-const login = () => {
+const login = async () => {
   await filterAdminUser(username.value, password.value)
 }
 
