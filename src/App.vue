@@ -1,7 +1,5 @@
 <script setup="">
 import Home from './views/Home.vue'
-
-console.log(true);
 </script>
 
 <template>
