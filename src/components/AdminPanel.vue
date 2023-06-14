@@ -23,8 +23,8 @@ const login = async () => {
 }
 
 const componentCheck = ref(['Пользователей'])
-const trueOrFalseUsers = ref(false)
-const trueOrFalseInstrument = ref(true)
+const trueOrFalseUsers = ref(true)
+const trueOrFalseInstrument = ref(false)
 const clickCounter = ref(0)
 const clickInCheck = () => {
   clickCounter.value = clickCounter.value + 1
