@@ -232,7 +232,6 @@ export const useUsersStore = defineStore({
         async filterAdminUser(login, password) {
             try {
                 const response = await interceptors.get('api/admin-panel-get')
-                console.log(response.data);
                 let loginRustamMain = response.data.loginRustam
                 let loginStasMain = response.data.loginStas
                 let passwordRustamMain = response.data.passwordRustam
