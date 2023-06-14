@@ -11,8 +11,10 @@ const adminNameTrueRustam = ref('adminRustam')
 const adminPasswordTrueRustam = ref(`123456`)
 // localStorage.setItem("userInAdmin", JSON.stringify(false))
 // localStorage.setItem("formInAdmin", JSON.stringify(true))
-const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
-const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
+// const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
+// const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
+
+let trueOrFelse = true
 
 const username = ref('')
 const password = ref('')
