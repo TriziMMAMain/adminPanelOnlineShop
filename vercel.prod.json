@@ -3,13 +3,16 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
+      "use": "@vercel/node",
       "config": {
         "optimize": {
           "include": [
             "vue",
             "lodash"
           ]
+        },
+        "rollupOutputOptions": {
+          "external": ["fs"]
         },
         "devCommand": "yarn dev",
         "buildCommand": "yarn build"
