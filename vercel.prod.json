@@ -14,8 +14,7 @@
         "rollupOutputOptions": {
           "external": ["fs"]
         },
-        "devCommand": "yarn dev",
-        "buildCommand": "yarn build"
+        "devCommand": "yarn dev"
       }
     }
   ],
