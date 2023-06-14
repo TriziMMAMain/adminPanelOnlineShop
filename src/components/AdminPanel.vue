@@ -1,14 +1,16 @@
 <script setup="">
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useUsersStore} from '../stores/counter.js'
 import UsersComponent from '../components/AdminPanelComponents/usersComponent.vue'
 import InstrumentComponent from '../components/AdminPanelComponents/instrumentComponent.vue'
 import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification/toasting.js'
 
-const {filterAdminUser} = useUsersStore()
+const {filterAdminUser, visitsInSite} = useUsersStore()
 
-localStorage.setItem("userInAdmin", JSON.stringify(false))
-localStorage.setItem("formInAdmin", JSON.stringify(true))
+onMounted(() => {
+  visitsInSite()
+})
+
 const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
 const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
 

@@ -15,6 +15,20 @@ export const useUsersStore = defineStore({
         arrayTypeResult: null,
     }),
     actions: {
+        visitsInSite() {
+            let visits = JSON.parse(localStorage.getItem('visits'))
+            if (!visits) {
+                localStorage.setItem('visits', JSON.stringify(1));
+                visits = 1;
+                localStorage.setItem("userInAdmin", JSON.stringify(false))
+                localStorage.setItem("formInAdmin", JSON.stringify(true))
+            } else {
+                const newVisits = visits + 1;
+                localStorage.setItem('visits', JSON.stringify(newVisits));
+                visits = newVisits;
+                console.log(`visits`, visits)
+            }
+        },
         // Fetching user
         async fetchingUsers() {
             try {
