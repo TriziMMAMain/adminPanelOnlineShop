@@ -2,7 +2,7 @@
 import {defineStore} from 'pinia'
 import _ from 'lodash'
 import interceptors  from '../api.js';
-import {ProccesingSuccessfuly, ProcessingError} from '../notification/toasting.js'
+import {FailLogin, ProccesingSuccessfuly, ProcessingError, SuccesfullLogin} from '../notification/toasting.js'
 import fs from "fs";
 
 export const useUsersStore = defineStore({
@@ -212,6 +212,35 @@ export const useUsersStore = defineStore({
                 return false
             }
 
+        },
+
+        // Filter admin user
+        async filterAdminUser(login, password) {
+            try {
+                const response = await interceptors.get('api/admin-panel-get')
+                console.log(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+            // if (login === adminNameStas && password === adminPasswordStas) {
+            //     SuccesfullLogin(`Добро пожаловать ${adminNameStas}`)
+            //     localStorage.setItem("userInAdmin", JSON.stringify(true))
+            //     localStorage.setItem("formInAdmin", JSON.stringify(false))
+            //     setTimeout(() => {
+            //         window.location.reload()
+            //     }, 1000)
+            // } else if (login === adminNameRustam && password === adminPasswordRustam) {
+            //     SuccesfullLogin(`Добро пожаловать ${adminNameRustam}`)
+            //     localStorage.setItem("userInAdmin", JSON.stringify(true))
+            //     localStorage.setItem("formInAdmin", JSON.stringify(false))
+            //     setTimeout(() => {
+            //         window.location.reload()
+            //     }, 1000)
+            // } else {
+            //     FailLogin('Неправильно ведены данные!')
+            //     localStorage.setItem("userInAdmin", JSON.stringify(false))
+            //     localStorage.setItem("formInAdmin", JSON.stringify(true))
+            // }
         },
     },
     getters: {

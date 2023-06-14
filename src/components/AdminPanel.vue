@@ -1,14 +1,11 @@
 <script setup="">
 import {ref} from 'vue'
+import {useUsersStore} from '../stores/counter.js'
 import UsersComponent from '../components/AdminPanelComponents/usersComponent.vue'
 import InstrumentComponent from '../components/AdminPanelComponents/instrumentComponent.vue'
 import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification/toasting.js'
 
-const adminNameTrueStas = ref('adminStas')
-const adminPasswordTrueStas = ref('123456')
-
-const adminNameTrueRustam = ref('adminRustam')
-const adminPasswordTrueRustam = ref(`123456`)
+const {filterAdminUser} = useUsersStore()
 
 localStorage.setItem("userInAdmin", JSON.stringify(false))
 localStorage.setItem("formInAdmin", JSON.stringify(true))
@@ -20,7 +17,7 @@ const username = ref('')
 const password = ref('')
 
 const login = () => {
-
+  await filterAdminUser(username.value, password.value)
 }
 
 const componentCheck = ref(['Пользователей'])
