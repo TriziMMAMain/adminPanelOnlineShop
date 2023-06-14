@@ -60,7 +60,7 @@ const clickInCheck = () => {
     </form>
   </div>
   <div class="blockTrueOrFalse"
-       v-if="trueOrFalse">
+       v-else>
     <v-btn @click="clickInCheck()">Показать: {{ componentCheck[0] }}</v-btn>
     <div class="blockUsersOrInstrument">
       <UsersComponent v-if="trueOrFalseUsers"></UsersComponent>
