@@ -55,6 +55,8 @@ const processingInRefusal = async (user) => {
         Имя: {{ user.name }} <br>
         Номер телефона: {{ user.phone }} <br>
         Почта: {{ user.email }} <br>
+        Дата нажатия на кнопку "подтвердить заказ": {{ user.dateClick }} <br>
+        Время нажатия на кнопку "подтвердить заказ": {{ user.timeClick }} <br>
         Тип доставки: {{ user.deliveryType[0] }} <br>
         Адрес: {{ user.address }} <br>
         Время доставки: {{ user.dayAndTime }} <br>
