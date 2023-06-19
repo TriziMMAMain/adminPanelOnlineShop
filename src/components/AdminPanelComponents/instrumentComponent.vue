@@ -97,7 +97,7 @@ const pushTitleInfo = () => {
   counterClickBtnPush.value = counterClickBtnPush.value + 1
   if (counterClickBtnPush.value <= 6) {
     const newFeatureTopTitleObject = {
-      featureTopTitleInfoTitle: vTextFieldFeatureTopTitleInfoTitle.value,
+      featureTopTitleInfoTitle: vTextFieldFeatureTopTitleInfoTitle.value + ':',
       featureTopTitleInfoText: vTextFieldFeatureTopTitleInfoText.value,
     };
     featureTopTitleObject.value = newFeatureTopTitleObject;
@@ -120,7 +120,7 @@ const deleteTitleInfo = () => {
 // FeatureMiddle
 const pushFeatureMiddle = () => {
   const newFeatureMiddleObject = {
-    feature: vTextFieldFeatureMiddleFeature.value,
+    feature: vTextFieldFeatureMiddleFeature.value + ':',
     featureValue: vTextFieldFeatureMiddleFetureValue.value,
   };
   featureMiddleArray.value.push(newFeatureMiddleObject);
@@ -167,7 +167,7 @@ const deletePhotoArray = () => {
 //
 
 
-const submitForm = async  () => {
+const submitForm = async () => {
   const newIdMathInstrument = ref(Math.floor(Math.random() * 1000000))
   toolObject.value.id = newIdMathInstrument.value
   toolObject.value.numberInList = 0
@@ -181,11 +181,18 @@ const submitForm = async  () => {
   toolObject.value.featureMiddle = featureMiddleArray.value
   toolObject.value.featureDownArray = featureDownArray.value
   toolObject.value.availability = vTextFieldAvailability.value
+  toolObject.value.avalibilitySecond = null
   toolObject.value.imgTitle = vTextFieldImgTitle.value
   toolObject.value.imgArray = photoArray.value
   toolObject.value.price = vTextFieldPrice.value
   toolObject.value.orderSum = 1
   toolObject.value.priceOrder = vTextFieldPrice.value
+
+  if (toolObject.value.availability >= 1) {
+    toolObject.value.avalibilitySecond = true
+  } else {
+    toolObject.value.avalibilitySecond = false
+  }
 
   await postInstrument(toolObject.value)
 
@@ -230,6 +237,12 @@ const submitForm = async  () => {
                   clearable
                   label="Введите заголовок, который будет находиться вначале характеристики"
                   variant="underlined"/>
+    <br>
+    <v-row>
+      <v-col>
+        <p class="textVTextFieldFeatureTop">{{ vTextFieldFeatureTop }}</p>
+      </v-col>
+    </v-row>
     <v-container>
       <v-row>
         <v-col cols="6">
@@ -245,9 +258,18 @@ const submitForm = async  () => {
                         label="Значение преимуществ"/>
         </v-col>
       </v-row>
-      <v-btn @click="pushTitleInfo()">Добавить эти значения</v-btn>
+      <div class="actionsVBtn d-flex justify-space-between">
+        <v-btn @click="pushTitleInfo()">Добавить эти значения</v-btn>
+        <v-btn @click="deleteTitleInfo()">Удалить все значения</v-btn>
+      </div>
+      <v-row>
+        <v-col>
+          <p class="textVTextFieldFeatureTop" v-for="i in featureTopTitleArray">{{ i.featureTopTitleInfoTitle }}
+            {{ i.featureTopTitleInfoText }}</p>
+        </v-col>
+      </v-row>
 
-      <v-btn @click="deleteTitleInfo()">Удалить все значения</v-btn>
+
     </v-container>
     <v-container>
       <v-row>
@@ -264,9 +286,15 @@ const submitForm = async  () => {
                         label="Значение характеристики"/>
         </v-col>
       </v-row>
-      <v-btn @click="pushFeatureMiddle()">Добавить эти значения</v-btn>
-
-      <v-btn @click="deleterFeatureMiddle()">Удалить все значения</v-btn>
+      <div class="actionsVBtn d-flex justify-space-between">
+        <v-btn @click="pushFeatureMiddle()">Добавить эти значения</v-btn>
+        <v-btn @click="deleterFeatureMiddle()">Удалить все значения</v-btn>
+      </div>
+      <v-row>
+        <v-col>
+          <p class="textVTextFieldFeatureTop" v-for="i in featureMiddleArray">{{ i.feature }} {{ i.featureValue }}</p>
+        </v-col>
+      </v-row>
     </v-container>
     <v-container>
       <v-row>
@@ -277,9 +305,15 @@ const submitForm = async  () => {
                         label="Заголовок преимуществ"/>
         </v-col>
       </v-row>
-      <v-btn @click="pushFeatureDown()">Добавить эти значения</v-btn>
-
-      <v-btn @click="deleterFeatureDown()">Удалить все значения</v-btn>
+      <div class="actionsVBtn d-flex justify-space-between">
+        <v-btn @click="pushFeatureDown()">Добавить эти значения</v-btn>
+        <v-btn @click="deleterFeatureDown()">Удалить все значения</v-btn>
+      </div>
+      <v-row>
+        <v-col>
+          <p class="textVTextFieldFeatureTop" v-for="i in featureDownArray">{{ i.featureDown }}</p>
+        </v-col>
+      </v-row>
     </v-container>
     <v-text-field v-model="vTextFieldAvailability"
                   clearable
@@ -298,18 +332,20 @@ const submitForm = async  () => {
                         label="Фото"/>
         </v-col>
       </v-row>
-      <v-btn @click="pushPhotoArray()">Добавить эти значения</v-btn>
-
-      <v-btn @click="deletePhotoArray()">Удалить все значения</v-btn>
+      <div class="actionsVBtn d-flex justify-space-between">
+        <v-btn @click="pushPhotoArray()">Добавить эти значения</v-btn>
+        <v-btn @click="deletePhotoArray()">Удалить все значения</v-btn>
+      </div>
+      <v-row>
+        <v-col>
+          <p class="textVTextFieldFeatureTop" v-for="i in photoArray">{{ i.src }}</p>
+        </v-col>
+      </v-row>
     </v-container>
     <v-text-field v-model.number="vTextFieldPrice"
                   clearable
                   label="Цена за шт"
                   variant="underlined"/>
-
-
-
-
     <v-btn color="primary" @click="submitForm">Submit</v-btn>
   </v-form>
 

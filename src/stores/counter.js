@@ -205,14 +205,10 @@ export const useUsersStore = defineStore({
         async postInstrument(instrument) {
             try {
                 console.log(instrument);
-                let instrumentJSON = JSON.stringify(instrument)
-                const response = await interceptors.post('instrument/add', instrumentJSON)
+                const response = await interceptors.post('instrument/add', instrument)
                     .then((result) => {
                         console.log(result.status);
                         ProccesingSuccessfuly('Инструмент добавлен на сайт!')
-                        setTimeout(() => {
-                            window.location.reload()
-                        }, 1000)
                     })
                     .catch((err) => {
                         console.log(err);
