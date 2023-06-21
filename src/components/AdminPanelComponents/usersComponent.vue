@@ -16,19 +16,16 @@ onMounted(async () => {
   }
 })
 
-const processingInAccept = async (user) => {
+const processingInAccept = async (user, orderId, _id) => {
   try {
-    await acceptedUser(user)
-    ProccesingSuccessfuly('Обработка успешна')
+    await acceptedUser(user, orderId, _id)
   } catch (error) {
-    ProcessingError(`Ошибка: ${error}`)
     console.log(error)
   }
 }
-
-const processingInRefusal = async (user) => {
+const processingInRefusal = async (user, orderId, _id) => {
   try {
-    await refusalUser(user)
+    await refusalUser(user, orderId, _id)
     ProccesingSuccessfuly('Обработка успешна')
   } catch (error) {
     ProcessingError(`Ошибка: ${error}`)
@@ -52,26 +49,31 @@ const processingInRefusal = async (user) => {
         ></v-divider>
         <br>
         ID: {{ user._id }} <br>
+        newIdL: {{ user.newId }}
         Имя: {{ user.name }} <br>
         Номер телефона: {{ user.phone }} <br>
         Почта: {{ user.email }} <br>
-        Дата нажатия на кнопку "подтвердить заказ": {{ user.dateClick }} <br>
-        Время нажатия на кнопку "подтвердить заказ": {{ user.timeClick }} <br>
-        Тип доставки: {{ user.deliveryType[0] }} <br>
-        Адрес: {{ user.address }} <br>
-        Время доставки: {{ user.dayAndTime }} <br>
-        <h3>Инструменты пользователя</h3>
-        <span v-for="i in user.instrumentArray">
+        <div class="vForBlock" v-for="item in user.instrumentArraySecond">
+          <h1>Заказ под номером {{ item.orderId }}</h1>
+          Дата нажатия на кнопку "подтвердить заказ": {{ item.dateClick }} <br>
+          Время нажатия на кнопку "подтвердить заказ": {{ item.timeClick }} <br>
+          Тип доставки: {{ item.deliveryType[0] }} <br>
+          Адрес: {{ item.address }} <br>
+          Время доставки: {{ item.dayAndTime }} <br>
+          <h3>Инструменты пользователя</h3>
+          <span v-for="i in item.instrumentArray">
           Название: {{ i.name }} -
           Цена за шт: {{ i.price }} -
           Кол-во шт: {{ i.orderSum }} -
           Общая сумма: {{ i.priceOrder }} -
           <br>
         </span>
-        <br>
-        Обработка: {{ user.processing }}
-        <v-btn @click="processingInAccept(user)">Добавить в обработку {{ user.newId }}</v-btn>
-        <v-btn @click="processingInRefusal(user)">Отказать в обработке {{ user.newId }}</v-btn>
+          <br>
+          Обработка: {{ item.processing }}
+          <v-btn @click="processingInAccept(user, item.orderId, item._id)">Добавить в обработку {{ item.orderId }}</v-btn>
+          <v-btn @click="processingInRefusal(user, item.orderId, item._id)">Отказать в обработке {{ item.orderId }}</v-btn>
+        </div>
+
       </li>
     </ul>
   </div>

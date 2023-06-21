@@ -1,7 +1,7 @@
 // - import
 import {defineStore} from 'pinia'
 import _ from 'lodash'
-import interceptors  from '../api.js';
+import interceptors from '../api.js';
 import {FailLogin, ProccesingSuccessfuly, ProcessingError, SuccesfullLogin} from '../notification/toasting.js'
 import fs from "fs";
 
@@ -26,7 +26,6 @@ export const useUsersStore = defineStore({
                 const newVisits = visits + 1;
                 localStorage.setItem('visits', JSON.stringify(newVisits));
                 visits = newVisits;
-                console.log(`visits`, visits)
             }
         },
         // Fetching user
@@ -44,42 +43,52 @@ export const useUsersStore = defineStore({
             }
         },
         // Change user.processing
-        async acceptedUser(user) {
+        async acceptedUser(user, orderId, _id) {
             try {
                 const userCopy = {
-                    processing: 'Принят в обработку'
+                    instrumentArraySecond: {
+                        _id: _id,
+                        orderId: orderId,
+                        processing: 'Принят в обработку'
+                    },
                 }
-                let userJSON = JSON.stringify(userCopy)
-                console.log(userJSON);
-                const response = await interceptors.patch(`users/update/${user._id}`, userCopy)
+                const response = await interceptors.patch(`users/update/${user.newId}`, userCopy)
                     .then((result) => {
+                        console.log(result.status);
                         console.log(result.data);
+                        ProccesingSuccessfuly('Обработка успешна')
                         setTimeout(() => {
                             window.location.reload()
                         }, 1000)
                     })
                     .catch((err) => {
+                        ProcessingError(`Ошибка: ${err}`)
                         console.log(err);
                     })
             } catch (err) {
                 console.log(err);
             }
         },
-        async refusalUser(user) {
+        async refusalUser(user, orderId, _id) {
             try {
                 const userCopy = {
-                    processing: 'Отклонен в обработке'
+                    instrumentArraySecond: {
+                        _id: _id,
+                        orderId: orderId,
+                        processing: 'Отклонен в обработке'
+                    },
                 }
-                let userJSON = JSON.stringify(userCopy)
-                console.log(userJSON);
-                const response = await interceptors.patch(`users/update/${user._id}`, userCopy)
+                const response = await interceptors.patch(`users/update/${user.newId}`, userCopy)
                     .then((result) => {
+                        console.log(result.status);
                         console.log(result.data);
+                        ProccesingSuccessfuly('Обработка успешна')
                         setTimeout(() => {
                             window.location.reload()
                         }, 1000)
                     })
                     .catch((err) => {
+                        ProcessingError(`Ошибка: ${err}`)
                         console.log(err);
                     })
             } catch (err) {
@@ -200,6 +209,71 @@ export const useUsersStore = defineStore({
                 return false
             }
         },
+        // Fetching typeThis
+        async fetchingInstrumentTypeThis(type) {
+            try {
+                let arrayType = []
+                // Cordless
+                if (type === "Аккумуляторная дрель-шуруповерт") {
+                    arrayType = ['Тип', 'Тип двигателя', 'Наличие удара', 'Ленточные (магазинные)',
+                        'Наличие реверса', 'Наличие подсветки', 'Тормоз двигателя', 'Тип патрона',
+                        'Крепление патрона', 'Блокировка шпинделя', 'Размер зажимаемой оснастки', 'MIN размер оснастки',
+                        'МAX размер оснастки', 'MAX крутящий момент',
+                        'Жестк. вращ. момент', 'Мягк. вращ. момент', 'Число скоростей',
+                        'Частота вращения шпинделя', 'MAX частота вращения шпинделя', 'MAX диаметр шурупа',
+                        'Max диаметр сверления (металл)',
+                        'МAX диаметр сверления (дерево)', 'Тип аккумулятора', 'Напряжение аккумулятора',
+                        'Ёмкость аккумулятора', 'Устройство аккумулятора', 'Количество аккумуляторов в комплекте',
+                        'Зарядное устройство в комплекте', 'Габариты без упаковки',
+                        'Вес нетто', 'Число ступеней крутящего момента', 'Съемный патрон', 'Крепление на ремень',
+                        'Индикатор уровня зарядки на корпусе дрели']
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                }
+                // Gasoline
+                if (type === "Бензопила") {
+                    arrayType = [
+                        'Класс пилы', 'Мощность (л.с.)', 'Мощность (кВт)',
+                        'Длина шины', 'Длина шины (дюйм)', 'Шаг цепи',
+                        'Ширина паза', 'Количество звеньев', 'Объем двигателя',
+                        'Объем масляного бака', 'Ёмкость топливного бака', 'Уровень шума',
+                        'Свеча зажигания', 'Обороты холостого хода', 'Праймер', 'МAX скорость вращения цепи',
+                        'Легкий запуск', 'Виброзащита', 'Работа одной рукой',
+                        'Тактность двигателя', 'Чехол/сумка в комплекте', 'Вес нетто'
+                    ]
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                }
+                // Network
+
+                // Pneumotool
+                localStorage.setItem("instrument_type_this", JSON.stringify(this.arrayTypeResult))
+                return true
+            } catch (err) {
+                console.log(err);
+                return false
+            }
+        },
 
         // Post instrument
         async postInstrument(instrument) {
@@ -258,7 +332,5 @@ export const useUsersStore = defineStore({
             }
         },
     },
-    getters: {
-
-    },
+    getters: {},
 })

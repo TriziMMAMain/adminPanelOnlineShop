@@ -4,13 +4,14 @@ import axios from "axios";
 import {useUsersStore} from '../../stores/counter.js'
 import {ProccesingSuccessfuly, ProcessingError} from "../../notification/toasting";
 
-const {fetchingInstrumentType, postInstrument} = useUsersStore()
+const {fetchingInstrumentType, fetchingInstrumentTypeThis, postInstrument} = useUsersStore()
 
 // Counter True or False
 const counterTrueOrFalse = ref(true)
 const counterClickBtnPush = ref(0)
 // Object
 const toolObject = ref({})
+const productsFilterType = ref([])
 // Type
 const vSelectType = ref('')
 const vSelectTypeArray = ref(['Аккумуляторный инструмент', 'Бензоинструмент', 'Сетевой инструмент', 'Пневмоинструмент'])
@@ -60,6 +61,7 @@ const featureMiddleObject = ref({
 })
 const vTextFieldFeatureMiddleFeature = ref('')
 const vTextFieldFeatureMiddleFetureValue = ref('')
+const vTextFieldFeatureMiddleFeatureArray = ref([])
 // featureDown
 const featureDownArray = ref([])
 const featureDownObject = ref({
@@ -92,6 +94,16 @@ const postInBackendType = async () => {
 
 }
 // Axios
+
+const filterTypeArray = async (products, instrumentTypeText) => {
+  if (await fetchingInstrumentTypeThis(instrumentTypeText)) {
+    vTextFieldFeatureMiddleFeatureArray.value = JSON.parse(localStorage.getItem("instrument_type_this"))
+  }
+  // productsFilterType.value = _.filter(products, item => item === instrumentTypeText)
+  //
+  // instrumentTypeThisArray.value = _.uniq(productsFilterType.value.map(item => item.typeThis))
+
+}
 
 const pushTitleInfo = () => {
   counterClickBtnPush.value = counterClickBtnPush.value + 1
@@ -218,6 +230,7 @@ const submitForm = async () => {
         focused
         :items="vSelectTypeThisArray"
         variant="underlined"
+        @update:search="filterTypeArray(vSelectTypeThisArray, vSelectTypeThis)"
     ></v-autocomplete>
     <v-autocomplete
         label="Выберите категорию инструмента"
@@ -233,23 +246,22 @@ const submitForm = async () => {
                   label="Название инструмента"
                   variant="underlined"
     />
-    <v-text-field v-model="vTextFieldFeatureTop"
+    <v-textarea v-model="vTextFieldFeatureTop"
                   clearable
                   label="Введите заголовок, который будет находиться вначале характеристики"
                   variant="underlined"/>
     <br>
-    <v-row>
-      <v-col>
-        <p class="textVTextFieldFeatureTop">{{ vTextFieldFeatureTop }}</p>
-      </v-col>
-    </v-row>
     <v-container>
       <v-row>
         <v-col cols="6">
-          <v-text-field v-model="vTextFieldFeatureTopTitleInfoTitle"
-                        clearable
-                        variant="underlined"
-                        label="Заголовок преимуществ"/>
+          <v-autocomplete
+              label="Выберите заголовок преимуществ"
+              v-model="vTextFieldFeatureTopTitleInfoTitle"
+              clearable
+              :items='vTextFieldFeatureMiddleFeatureArray'
+              variant="underlined"
+          >
+          </v-autocomplete>
         </v-col>
         <v-col cols="6">
           <v-text-field v-model="vTextFieldFeatureTopTitleInfoText"
@@ -274,10 +286,14 @@ const submitForm = async () => {
     <v-container>
       <v-row>
         <v-col cols="6">
-          <v-text-field v-model="vTextFieldFeatureMiddleFeature"
-                        clearable
-                        variant="underlined"
-                        label="Заголовок характеристики"/>
+          <v-autocomplete
+              label="Выберите заголовок характеристик"
+              v-model="vTextFieldFeatureMiddleFeature"
+              clearable
+              :items='vTextFieldFeatureMiddleFeatureArray'
+              variant="underlined"
+          >
+          </v-autocomplete>
         </v-col>
         <v-col cols="6">
           <v-text-field v-model="vTextFieldFeatureMiddleFetureValue"
@@ -318,6 +334,7 @@ const submitForm = async () => {
     <v-text-field v-model="vTextFieldAvailability"
                   clearable
                   label="Кол-во на складе"
+                  type="number"
                   variant="underlined"/>
     <v-text-field v-model="vTextFieldImgTitle"
                   clearable
