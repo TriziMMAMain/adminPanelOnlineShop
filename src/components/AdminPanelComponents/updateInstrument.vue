@@ -1,10 +1,10 @@
 <script setup="">
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import axios from "axios";
 import {useUsersStore} from '../../stores/counter.js'
 import {ProccesingSuccessfuly, ProcessingError} from "../../notification/toasting";
 
-const {fetchingInstrumentType, fetchingInstrumentTypeThis, postInstrument} = useUsersStore()
+const {fetchingInstrumentType, fetchingInstrumentTypeThis, filterId, patchInstrument, filterNameById} = useUsersStore()
 
 // Counter True or False
 const counterTrueOrFalse = ref(true)
@@ -12,6 +12,11 @@ const counterClickBtnPush = ref(0)
 // Object
 const toolObject = ref({})
 const productsFilterType = ref([])
+// _ID
+const vAutocompleteIdArray = ref([])
+const vAutocompleteIdText = ref([])
+const vAutocompleteIdTextSecond = ref([])
+const vAutocompleteIdTextThird = ref('')
 // Type
 const vSelectType = ref('')
 const vSelectTypeArray = ref(['Аккумуляторный инструмент', 'Бензоинструмент', 'Сетевой инструмент', 'Пневмоинструмент'])
@@ -79,7 +84,7 @@ const photoObject = ref({
 })
 const vTextFieldPhotoText = ref('')
 // Price
-const vTextFieldPrice = ref(null)
+const vTextFieldPrice = ref('')
 // Home of the brand and country
 const vTextFieldHomeOfTheBrand = ref('')
 const vTextFieldCountryOf = ref('')
@@ -95,8 +100,6 @@ const postInBackendType = async () => {
   if (await fetchingInstrumentType(vSelectType.value)) {
     vSelectTypeThisArray.value = JSON.parse(localStorage.getItem("instrument_type"))
   }
-
-
 }
 // Axios
 
@@ -104,10 +107,6 @@ const filterTypeArray = async (products, instrumentTypeText) => {
   if (await fetchingInstrumentTypeThis(instrumentTypeText)) {
     vTextFieldFeatureMiddleFeatureArray.value = JSON.parse(localStorage.getItem("instrument_type_this"))
   }
-  // productsFilterType.value = _.filter(products, item => item === instrumentTypeText)
-  //
-  // instrumentTypeThisArray.value = _.uniq(productsFilterType.value.map(item => item.typeThis))
-
 }
 
 const pushTitleInfo = () => {
@@ -197,42 +196,107 @@ const deleteEquipmentArray = () => {
 
 
 const submitForm = async () => {
-  const newIdMathInstrument = ref(Math.floor(Math.random() * 1000000))
-  toolObject.value.id = newIdMathInstrument.value
-  toolObject.value.numberInList = 0
-  toolObject.value.type = vSelectType.value
-  toolObject.value.typeThis = vSelectTypeThis.value
-  toolObject.value.brand = vSelectBrand.value
-  toolObject.value.name = vTextFieldName.value
-  toolObject.value.city = 'Донецк'
-  toolObject.value.featureTop = vTextFieldFeatureTop.value
-  toolObject.value.featureTopTitle = featureTopTitleArray.value
-  toolObject.value.featureMiddle = featureMiddleArray.value
-  toolObject.value.featureDownArray = featureDownArray.value
-  toolObject.value.availability = vTextFieldAvailability.value
-  toolObject.value.avalibilitySecond = null
-  toolObject.value.imgTitle = vTextFieldImgTitle.value
-  toolObject.value.imgArray = photoArray.value
-  toolObject.value.price = vTextFieldPrice.value
-  toolObject.value.orderSum = 1
-  toolObject.value.priceOrder = vTextFieldPrice.value
-  toolObject.value.equipmentArray = vTextFieldEquipmentArray.value
-  toolObject.value.homeOfTheBrand = vTextFieldHomeOfTheBrand.value
-  toolObject.value.countryOfOrigin = vTextFieldCountryOf.value
+   if (vSelectType.value === "") {} else {
+     toolObject.value.type = vSelectType.value
+   }
+  if (vSelectTypeThis.value === "") {} else {
+    toolObject.value.typeThis = vSelectTypeThis.value
+  }
+  if (vSelectBrand.value === "") {} else {
+    toolObject.value.brand = vSelectBrand.value
+  }
+  if (vTextFieldName.value === "") {} else {
+    toolObject.value.name = vTextFieldName.value
+  }
+  if (vTextFieldFeatureTop.value === "") {} else {
+    toolObject.value.featureTop = vTextFieldFeatureTop.value
+  }
+  if (featureTopTitleArray.value.length === 0) {} else {
+    toolObject.value.featureTopTitle = featureTopTitleArray.value
+  }
+  if (featureMiddleArray.value.length === 0) {} else {
+    toolObject.value.featureMiddle = featureMiddleArray.value
+  }
+  if (featureDownArray.value.length === 0) {} else {
+    toolObject.value.featureDownArray = featureDownArray.value
+  }
+  if (vTextFieldAvailability.value === "") {} else {
+    toolObject.value.availability = vTextFieldAvailability.value
+  }
+  if (vTextFieldImgTitle.value === "") {} else {
+    toolObject.value.imgTitle = vTextFieldImgTitle.value
+  }
+  if (photoArray.value.length === 0) {} else {
+    toolObject.value.imgArray = photoArray.value
+  }
+  if (vTextFieldPrice.value === "") {} else {
+    toolObject.value.price = vTextFieldPrice.value
+  }
+  if (vTextFieldPrice.value === "") {} else {
+    toolObject.value.priceOrder = vTextFieldPrice.value
+  }
+  if (vTextFieldEquipmentArray.value.length === 0) {} else {
+    toolObject.value.equipmentArray = vTextFieldEquipmentArray.value
+  }
+  if (vTextFieldHomeOfTheBrand.value === "") {} else {
+    toolObject.value.homeOfTheBrand = vTextFieldHomeOfTheBrand.value
+  }
+  if (vTextFieldCountryOf.value === "") {} else {
+    toolObject.value.countryOfOrigin = vTextFieldCountryOf.value
+  }
 
-  if (toolObject.value.availability >= 1) {
+  if (toolObject.value.availability === undefined) {
+  } else if (toolObject.value.availability >= 1) {
     toolObject.value.avalibilitySecond = true
   } else {
     toolObject.value.avalibilitySecond = false
   }
 
-  await postInstrument(toolObject.value)
+  console.log(toolObject.value)
+  await patchInstrument(vAutocompleteIdText.value ,toolObject.value)
 
 }
+
+const filterNameByIdMain = async (_id) => {
+  if (await filterNameById(_id)) {
+    vAutocompleteIdTextThird.value = JSON.parse(localStorage.getItem("name_instrument_filtered_by_id"))
+  }
+}
+
+onMounted( async() => {
+  if (await filterId()) {
+    vAutocompleteIdArray.value = JSON.parse(localStorage.getItem("_id"))
+  }
+})
 </script>
 
 <template>
   <v-form type="submitForm()">
+    <div class="titleBlock">
+      <h1>Выберите ID инструмента который хотите изменить!!!</h1>
+      <v-autocomplete
+          label="Выберите ID"
+          v-model="vAutocompleteIdText"
+          clearable
+          focused
+          :items="vAutocompleteIdArray"
+          variant="underlined"
+      ></v-autocomplete>
+
+      <v-autocomplete
+          label="Выберите ID для того чтобы узнать название инструмента"
+          v-model="vAutocompleteIdTextSecond"
+          clearable
+          focused
+          :items="vAutocompleteIdArray"
+          variant="underlined"
+          @update:search="filterNameByIdMain(vAutocompleteIdTextSecond)"
+      ></v-autocomplete>
+      <h4>Вот название инструмента: {{ vAutocompleteIdTextThird }}</h4>
+      <h1>Выберите какие данные хотите поменять</h1>
+      <br>
+    </div>
+
     <v-autocomplete
         label="Выберите тип инструмента"
         v-model="vSelectType"
@@ -265,9 +329,9 @@ const submitForm = async () => {
                   variant="underlined"
     />
     <v-textarea v-model="vTextFieldFeatureTop"
-                  clearable
-                  label="Введите заголовок, который будет находиться вначале характеристики"
-                  variant="underlined"/>
+                clearable
+                label="Введите заголовок, который будет находиться вначале характеристики"
+                variant="underlined"/>
     <br>
     <v-container>
       <v-row>

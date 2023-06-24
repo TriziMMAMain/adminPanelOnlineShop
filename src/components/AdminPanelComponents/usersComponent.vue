@@ -1,17 +1,22 @@
 <script setup="">
-import {onMounted, ref} from 'vue'
-import interceptors  from '../../api.js';
+import {onMounted, ref, computed} from 'vue'
+import interceptors from '../../api.js';
 import {ProccesingSuccessfuly, ProcessingError} from '../../notification/toasting.js'
 import {useUsersStore} from '../../stores/counter.js'
 // Получаем пользователей
-const { fetchingUsers, acceptedUser, refusalUser } = useUsersStore()
+const {fetchingUsers, acceptedUser, refusalUser} = useUsersStore()
 
 
 let users = ref([])
-
+import axios from 'axios';
+let responseData = ref([])
+const response = async () => {
+  responseData.value = await axios.get('https://jsonplaceholder.typicode.com/comments').data
+}
 
 onMounted(async () => {
   if (await fetchingUsers()) {
+    await response()
     users.value = JSON.parse(localStorage.getItem("users"))
   }
 })
@@ -33,49 +38,60 @@ const processingInRefusal = async (user, orderId, _id) => {
   }
 }
 
+
+const usersToShow = ref(5)
+const visibleItems = computed(() => users.value.slice(0, usersToShow.value))
+const allItemsShown = computed(() => usersToShow.value >= users.value.length)
+
+function showMore() {
+  usersToShow.value += 5
+}
 </script>
 
 <template>
   <div>
-    <h2>Пользователи которые выбрали товар</h2>
-    <ul>
-      <li class="userLi"
-          v-for="user in users" :key="user._id">
-        <br>
-        <v-divider
-            :thickness="4"
-            class="border-opacity-25"
-            color="primary"
-        ></v-divider>
-        <br>
-        ID: {{ user._id }} <br>
-        newIdL: {{ user.newId }}
-        Имя: {{ user.name }} <br>
-        Номер телефона: {{ user.phone }} <br>
-        Почта: {{ user.email }} <br>
-        <div class="vForBlock" v-for="item in user.instrumentArraySecond">
-          <h1>Заказ под номером {{ item.orderId }}</h1>
-          Дата нажатия на кнопку "подтвердить заказ": {{ item.dateClick }} <br>
-          Время нажатия на кнопку "подтвердить заказ": {{ item.timeClick }} <br>
-          Тип доставки: {{ item.deliveryType[0] }} <br>
-          Адрес: {{ item.address }} <br>
-          Время доставки: {{ item.dayAndTime }} <br>
-          <h3>Инструменты пользователя</h3>
-          <span v-for="i in item.instrumentArray">
-          Название: {{ i.name }} -
-          Цена за шт: {{ i.price }} -
-          Кол-во шт: {{ i.orderSum }} -
-          Общая сумма: {{ i.priceOrder }} -
-          <br>
-        </span>
-          <br>
-          Обработка: {{ item.processing }}
-          <v-btn @click="processingInAccept(user, item.orderId, item._id)">Добавить в обработку {{ item.orderId }}</v-btn>
-          <v-btn @click="processingInRefusal(user, item.orderId, item._id)">Отказать в обработке {{ item.orderId }}</v-btn>
-        </div>
-
-      </li>
-    </ul>
+    <h1>Пользователи которые выбрали товар</h1>
+    <div v-for="user in visibleItems" :key="user">
+              <br>
+              <v-divider
+                  :thickness="4"
+                  class="border-opacity-25"
+                  color="primary"
+              ></v-divider>
+              <br>
+              ID: {{ user._id }} <br>
+              newId: {{ user.newId }} <br>
+              Имя: {{ user.name }} <br>
+              Номер телефона: {{ user.phone }} <br>
+              Почта: {{ user.email }} <br>
+              <div class="vForBlock" v-for="item in user.instrumentArraySecond">
+                <h1>Заказ под номером {{ item.orderId }}</h1>
+                Дата нажатия на кнопку "подтвердить заказ": {{ item.dateClick }} <br>
+                Время нажатия на кнопку "подтвердить заказ": {{ item.timeClick }} <br>
+                Тип доставки: {{ item.deliveryType[0] }} <br>
+                Адрес: {{ item.address }} <br>
+                Время доставки: {{ item.dayAndTime }} <br>
+                <h3>Инструменты пользователя</h3>
+                <span v-for="i in item.instrumentArray">
+                Название: {{ i.name }} -
+                Цена за шт: {{ i.price }} -
+                Кол-во шт: {{ i.orderSum }} -
+                Общая сумма: {{ i.priceOrder }} -
+                <br>
+              </span>
+                <br>
+                Обработка: {{ item.processing }}
+                <v-btn @click="processingInAccept(user, item.orderId, item._id)">Добавить в обработку {{
+                    item.orderId
+                  }}
+                </v-btn>
+                <v-btn @click="processingInRefusal(user, item.orderId, item._id)">Отказать в обработке {{
+                    item.orderId
+                  }}
+                </v-btn>
+              </div>
+    </div>
+    <v-btn v-if="!allItemsShown" @click="showMore()">Load more</v-btn>
   </div>
 </template>
 

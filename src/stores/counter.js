@@ -10,7 +10,8 @@ export const useUsersStore = defineStore({
     state: () => ({
         // users
         users: null,
-
+        _id: [],
+        instruments: null,
         // instrument
         arrayTypeResult: null,
     }),
@@ -274,6 +275,20 @@ export const useUsersStore = defineStore({
                 return false
             }
         },
+        // Fetching instrument
+        async fetchingInstrument() {
+            try {
+                const response = await interceptors.get('/api/instruments/get/all')
+                this.instruments = response.data
+                return true
+            } catch (error) {
+                this.error = error
+                console.log(error)
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
+                return false
+            }
+
+        },
 
         // Post instrument
         async postInstrument(instrument) {
@@ -295,7 +310,28 @@ export const useUsersStore = defineStore({
                 ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 return false
             }
+        },
+        // Patch instrument
+        async patchInstrument(_id, data) {
+            try {
+                console.log(_id);
+                console.log(data);
+                const response = await interceptors.patch(`/instrument/update/${_id}`, data)
+                    .then((result) => {
+                        console.log(result.status);
+                        ProccesingSuccessfuly('Инструмент обновлен!')
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
 
+                return true
+            } catch (error) {
+                this.error = error
+                console.log(error)
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
+                return false
+            }
         },
 
         // Filter admin user
@@ -329,6 +365,31 @@ export const useUsersStore = defineStore({
 
             } catch (err) {
                 console.log(err);
+            }
+        },
+        // Filter _id
+        async filterId() {
+            try {
+                if (await this.fetchingInstrument()) {
+                    for (let i = 0; i < this.instruments.length; i++) {
+                        this._id.push(this.instruments[i]._id)
+                    }
+                    localStorage.setItem("_id", JSON.stringify(this._id))
+                }
+                return true
+            } catch (err) {
+                console.log(err);
+            }
+            return false
+        },
+        async filterNameById(_id) {
+            try {
+                let filteredInstrument = _.filter(this.instruments, {_id: _id})
+                localStorage.setItem("name_instrument_filtered_by_id", JSON.stringify(filteredInstrument[0].name))
+                return true
+            } catch (err) {
+                console.log(err);
+                return false
             }
         },
     },

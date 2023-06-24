@@ -3,46 +3,24 @@ import {onMounted, ref} from 'vue'
 import {useUsersStore} from '../stores/counter.js'
 import UsersComponent from '../components/AdminPanelComponents/usersComponent.vue'
 import InstrumentComponent from '../components/AdminPanelComponents/instrumentComponent.vue'
+import UpdateInstrument from '../components/AdminPanelComponents/updateInstrument.vue'
 import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification/toasting.js'
 
 const {filterAdminUser, visitsInSite} = useUsersStore()
 
+const tab = ref(null)
+// form
 onMounted(() => {
   visitsInSite()
 })
-
 const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
 const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
-
-
 const username = ref('')
 const password = ref('')
-
 const login = async () => {
   await filterAdminUser(username.value, password.value)
 }
-
-const componentCheck = ref(['Пользователей'])
-const trueOrFalseUsers = ref(true)
-const trueOrFalseInstrument = ref(false)
-const clickCounter = ref(0)
-const clickInCheck = () => {
-  clickCounter.value = clickCounter.value + 1
-  if (clickCounter.value % 2 === 0) {
-    componentCheck.value[0] = 'Пользователей'
-  } else {
-    componentCheck.value[0] = 'Инструмент'
-  }
-  if (componentCheck.value[0] === 'Пользователей') {
-    ProccesingSuccessfuly('Вкладка пользователи')
-    trueOrFalseUsers.value = true
-    trueOrFalseInstrument.value = false
-  } else if (componentCheck.value[0] === 'Инструмент') {
-    ProccesingSuccessfuly('Вкладка инструмент')
-    trueOrFalseUsers.value = false
-    trueOrFalseInstrument.value = true
-  }
-}
+//
 
 </script>
 
@@ -63,11 +41,29 @@ const clickInCheck = () => {
   </div>
   <div class="blockTrueOrFalse"
        v-else>
-    <v-btn @click="clickInCheck()">Показать: {{ componentCheck[0] }}</v-btn>
-    <div class="blockUsersOrInstrument">
-      <UsersComponent v-if="trueOrFalseUsers"></UsersComponent>
-      <InstrumentComponent v-if="trueOrFalseInstrument"></InstrumentComponent>
-    </div>
+    <v-tabs
+        v-model="tab"
+        bg-color="primary"
+        class="mb-10"
+    >
+      <v-tab value="one">Пользователи</v-tab>
+      <v-tab value="two">Добавить инструмент</v-tab>
+      <v-tab value="three">Обновить инструмент</v-tab>
+    </v-tabs>
+
+      <v-window v-model="tab">
+        <v-window-item value="one">
+          <UsersComponent></UsersComponent>
+        </v-window-item>
+
+        <v-window-item value="two">
+          <InstrumentComponent></InstrumentComponent>
+        </v-window-item>
+
+        <v-window-item value="three">
+          <UpdateInstrument></UpdateInstrument>
+        </v-window-item>
+      </v-window>
 
   </div>
 
