@@ -9,7 +9,7 @@ import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification
 
 const {filterAdminUser, visitsInSite, filterId} = useUsersStore()
 
-const tab = ref('four')
+const tab = ref(null)
 // form
 onMounted(async () => {
   await visitsInSite()
