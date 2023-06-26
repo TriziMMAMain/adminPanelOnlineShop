@@ -4,14 +4,8 @@ import axios from "axios";
 import {useUsersStore} from '../../stores/counter.js'
 import {ProccesingSuccessfuly, ProcessingError} from "../../notification/toasting";
 
-const {fetchingInstrumentType, fetchingInstrumentTypeThis, filterId, patchInstrument, filterNameById} = useUsersStore()
+const {filterIdByName, filterNameById} = useUsersStore()
 
-// Counter True or False
-const counterTrueOrFalse = ref(true)
-const counterClickBtnPush = ref(0)
-// Object
-const toolObject = ref({})
-const productsFilterType = ref([])
 // _ID
 const vAutocompleteIdArray = ref([])
 const vAutocompleteIdText = ref([])
@@ -20,10 +14,19 @@ const vAutocompleteIdTextThird = ref('')
 //
 const vBtnOpenAndClose = ref(false)
 const vBtnOpenAndCloseSecond = ref(false)
+//
+const vAutocompleteNameArray = ref([])
+const vAutocompleteNameText = ref('')
+
 
 const filterNameByIdMain = async (_id) => {
   if (await filterNameById(_id)) {
     vAutocompleteIdTextThird.value = JSON.parse(localStorage.getItem("name_instrument_filtered_by_id"))
+  }
+}
+const filterIdByNameMain = async (name) => {
+  if (await filterIdByName(name)) {
+    vAutocompleteIdTextThird.value = JSON.parse(localStorage.getItem("name_instrument_filtered_by_name"))
   }
 }
 const openAndCloseFeature = () => {
@@ -35,6 +38,7 @@ const openAndCloseImg = () => {
 
 const funcOnMounted = async () => {
   vAutocompleteIdArray.value = JSON.parse(localStorage.getItem("_id"))
+  vAutocompleteNameArray.value = JSON.parse(localStorage.getItem("all_name_instruments"))
 }
 funcOnMounted()
 </script>
@@ -53,12 +57,25 @@ funcOnMounted()
         variant="underlined"
         @update:search="filterNameByIdMain(vAutocompleteIdTextSecond)"
     ></v-autocomplete>
+
+    <h1>Или выберите имя инструмента для поиска ID</h1>
+
+    <v-autocomplete
+        label="Выберите ID для того чтобы узнать название инструмента"
+        v-model="vAutocompleteNameText"
+        clearable
+        focused
+        :items="vAutocompleteNameArray"
+        variant="underlined"
+        @update:search="filterIdByNameMain(vAutocompleteNameText)"
+    ></v-autocomplete>
     <br>
 
   </div>
 
   <div class="instrument" v-for="item in [vAutocompleteIdTextThird]">
     <h2 class="title">Название: {{ item.name }}</h2>
+    <p class="text">_ID: {{ item._id }}</p>
     <p class="text">ID для поиска: {{ item.id }}</p>
     <p class="text">Тип: {{ item.type }}</p>
     <p class="text">Подкатегория: {{ item.typeThis }}</p>

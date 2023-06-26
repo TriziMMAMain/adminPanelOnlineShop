@@ -7,13 +7,14 @@ import UpdateInstrument from '../components/AdminPanelComponents/updateInstrumen
 import FetchingInstrumentById from '../components/AdminPanelComponents/fetchingInstrumentById.vue'
 import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification/toasting.js'
 
-const {filterAdminUser, visitsInSite, filterId} = useUsersStore()
+const {filterAdminUser, visitsInSite, filterId, fetchingOnlyNameInstrument} = useUsersStore()
 
 const tab = ref(null)
 // form
 onMounted(async () => {
   await visitsInSite()
   await filterId()
+  await fetchingOnlyNameInstrument()
 })
 const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
 const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))

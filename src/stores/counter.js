@@ -289,6 +289,17 @@ export const useUsersStore = defineStore({
             }
 
         },
+        async fetchingOnlyNameInstrument() {
+            try {
+                let allNameInstrument = []
+                for (let i = 0; i < this.instruments.length; i++) {
+                    allNameInstrument.push(this.instruments[i].name)
+                }
+                localStorage.setItem("all_name_instruments", JSON.stringify(allNameInstrument))
+            } catch (err) {
+                console.log(err);
+            }
+        },
 
         // Post instrument
         async postInstrument(instrument) {
@@ -386,6 +397,16 @@ export const useUsersStore = defineStore({
             try {
                 let filteredInstrument = _.filter(this.instruments, {_id: _id})
                 localStorage.setItem("name_instrument_filtered_by_id", JSON.stringify(filteredInstrument[0]))
+                return true
+            } catch (err) {
+                console.log(err);
+                return false
+            }
+        },
+        async filterIdByName(name) {
+            try {
+                let filteredInstrument = _.filter(this.instruments, {name: name})
+                localStorage.setItem("name_instrument_filtered_by_name", JSON.stringify(filteredInstrument[0]))
                 return true
             } catch (err) {
                 console.log(err);
