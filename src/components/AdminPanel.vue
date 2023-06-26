@@ -4,14 +4,16 @@ import {useUsersStore} from '../stores/counter.js'
 import UsersComponent from '../components/AdminPanelComponents/usersComponent.vue'
 import InstrumentComponent from '../components/AdminPanelComponents/instrumentComponent.vue'
 import UpdateInstrument from '../components/AdminPanelComponents/updateInstrument.vue'
+import FetchingInstrumentById from '../components/AdminPanelComponents/fetchingInstrumentById.vue'
 import {FailLogin, ProccesingSuccessfuly, SuccesfullLogin} from '../notification/toasting.js'
 
-const {filterAdminUser, visitsInSite} = useUsersStore()
+const {filterAdminUser, visitsInSite, filterId} = useUsersStore()
 
-const tab = ref(null)
+const tab = ref('four')
 // form
-onMounted(() => {
-  visitsInSite()
+onMounted(async () => {
+  await visitsInSite()
+  await filterId()
 })
 const trueOrFalse = JSON.parse(localStorage.getItem("userInAdmin"))
 const trueOrFalseForm = JSON.parse(localStorage.getItem("formInAdmin"))
@@ -49,6 +51,7 @@ const login = async () => {
       <v-tab value="one">Пользователи</v-tab>
       <v-tab value="two">Добавить инструмент</v-tab>
       <v-tab value="three">Обновить инструмент</v-tab>
+      <v-tab value="four">Узнать инструмент по ID</v-tab>
     </v-tabs>
 
       <v-window v-model="tab">
@@ -62,6 +65,9 @@ const login = async () => {
 
         <v-window-item value="three">
           <UpdateInstrument></UpdateInstrument>
+        </v-window-item>
+        <v-window-item value="four">
+          <FetchingInstrumentById></FetchingInstrumentById>
         </v-window-item>
       </v-window>
 

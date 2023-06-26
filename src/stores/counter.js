@@ -385,7 +385,7 @@ export const useUsersStore = defineStore({
         async filterNameById(_id) {
             try {
                 let filteredInstrument = _.filter(this.instruments, {_id: _id})
-                localStorage.setItem("name_instrument_filtered_by_id", JSON.stringify(filteredInstrument[0].name))
+                localStorage.setItem("name_instrument_filtered_by_id", JSON.stringify(filteredInstrument[0]))
                 return true
             } catch (err) {
                 console.log(err);

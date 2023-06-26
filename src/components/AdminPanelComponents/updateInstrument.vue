@@ -196,52 +196,68 @@ const deleteEquipmentArray = () => {
 
 
 const submitForm = async () => {
-   if (vSelectType.value === "") {} else {
-     toolObject.value.type = vSelectType.value
-   }
-  if (vSelectTypeThis.value === "") {} else {
+  if (vSelectType.value === "") {
+  } else {
+    toolObject.value.type = vSelectType.value
+  }
+  if (vSelectTypeThis.value === "") {
+  } else {
     toolObject.value.typeThis = vSelectTypeThis.value
   }
-  if (vSelectBrand.value === "") {} else {
+  if (vSelectBrand.value === "") {
+  } else {
     toolObject.value.brand = vSelectBrand.value
   }
-  if (vTextFieldName.value === "") {} else {
+  if (vTextFieldName.value === "") {
+  } else {
     toolObject.value.name = vTextFieldName.value
   }
-  if (vTextFieldFeatureTop.value === "") {} else {
+  if (vTextFieldFeatureTop.value === "") {
+  } else {
     toolObject.value.featureTop = vTextFieldFeatureTop.value
   }
-  if (featureTopTitleArray.value.length === 0) {} else {
+  if (featureTopTitleArray.value.length === 0) {
+  } else {
     toolObject.value.featureTopTitle = featureTopTitleArray.value
   }
-  if (featureMiddleArray.value.length === 0) {} else {
+  if (featureMiddleArray.value.length === 0) {
+  } else {
     toolObject.value.featureMiddle = featureMiddleArray.value
   }
-  if (featureDownArray.value.length === 0) {} else {
+  if (featureDownArray.value.length === 0) {
+  } else {
     toolObject.value.featureDownArray = featureDownArray.value
   }
-  if (vTextFieldAvailability.value === "") {} else {
+  if (vTextFieldAvailability.value === "") {
+  } else {
     toolObject.value.availability = vTextFieldAvailability.value
   }
-  if (vTextFieldImgTitle.value === "") {} else {
+  if (vTextFieldImgTitle.value === "") {
+  } else {
     toolObject.value.imgTitle = vTextFieldImgTitle.value
   }
-  if (photoArray.value.length === 0) {} else {
+  if (photoArray.value.length === 0) {
+  } else {
     toolObject.value.imgArray = photoArray.value
   }
-  if (vTextFieldPrice.value === "") {} else {
+  if (vTextFieldPrice.value === "") {
+  } else {
     toolObject.value.price = vTextFieldPrice.value
   }
-  if (vTextFieldPrice.value === "") {} else {
+  if (vTextFieldPrice.value === "") {
+  } else {
     toolObject.value.priceOrder = vTextFieldPrice.value
   }
-  if (vTextFieldEquipmentArray.value.length === 0) {} else {
+  if (vTextFieldEquipmentArray.value.length === 0) {
+  } else {
     toolObject.value.equipmentArray = vTextFieldEquipmentArray.value
   }
-  if (vTextFieldHomeOfTheBrand.value === "") {} else {
+  if (vTextFieldHomeOfTheBrand.value === "") {
+  } else {
     toolObject.value.homeOfTheBrand = vTextFieldHomeOfTheBrand.value
   }
-  if (vTextFieldCountryOf.value === "") {} else {
+  if (vTextFieldCountryOf.value === "") {
+  } else {
     toolObject.value.countryOfOrigin = vTextFieldCountryOf.value
   }
 
@@ -253,7 +269,7 @@ const submitForm = async () => {
   }
 
   console.log(toolObject.value)
-  await patchInstrument(vAutocompleteIdText.value ,toolObject.value)
+  await patchInstrument(vAutocompleteIdText.value, toolObject.value)
 
 }
 
@@ -263,11 +279,11 @@ const filterNameByIdMain = async (_id) => {
   }
 }
 
-onMounted( async() => {
-  if (await filterId()) {
-    vAutocompleteIdArray.value = JSON.parse(localStorage.getItem("_id"))
-  }
-})
+
+const funcOnMounted = async () => {
+  vAutocompleteIdArray.value = JSON.parse(localStorage.getItem("_id"))
+}
+funcOnMounted()
 </script>
 
 <template>
@@ -292,7 +308,8 @@ onMounted( async() => {
           variant="underlined"
           @update:search="filterNameByIdMain(vAutocompleteIdTextSecond)"
       ></v-autocomplete>
-      <h4>Вот название инструмента: {{ vAutocompleteIdTextThird }}</h4>
+      <h4>Вот название инструмента: {{ vAutocompleteIdTextThird.name }}</h4>
+      <br>
       <h1>Выберите какие данные хотите поменять</h1>
       <br>
     </div>
@@ -443,14 +460,18 @@ onMounted( async() => {
     </v-container>
     <v-container>
       <v-row>
-        <v-col><v-text-field v-model.number="vTextFieldHomeOfTheBrand"
-                             clearable
-                             label="Родина бренда"
-                             variant="underlined"/></v-col>
-        <v-col> <v-text-field v-model="vTextFieldCountryOf"
-                              clearable
-                              label="Производитель"
-                              variant="underlined"/></v-col>
+        <v-col>
+          <v-text-field v-model.number="vTextFieldHomeOfTheBrand"
+                        clearable
+                        label="Родина бренда"
+                        variant="underlined"/>
+        </v-col>
+        <v-col>
+          <v-text-field v-model="vTextFieldCountryOf"
+                        clearable
+                        label="Производитель"
+                        variant="underlined"/>
+        </v-col>
       </v-row>
       <v-row>
         <v-col>
