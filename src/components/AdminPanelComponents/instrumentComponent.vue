@@ -317,11 +317,11 @@ const submitForm = async () => {
           <v-text-field v-model="vTextFieldFeatureMiddleFetureValue"
                         clearable
                         variant="underlined"
-                        label="Значение характеристики"/>
+                        label="Значение характеристики"
+                        @keyup.enter="pushFeatureMiddle()"/>
         </v-col>
       </v-row>
-      <div class="actionsVBtn d-flex justify-space-between">
-        <v-btn @click="pushFeatureMiddle()">Добавить эти значения</v-btn>
+      <div class="actionsVBtn d-flex justify-end">
         <v-btn @click="deleterFeatureMiddle()">Удалить все значения</v-btn>
       </div>
       <v-row>
