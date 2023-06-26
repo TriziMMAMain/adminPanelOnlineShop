@@ -68,6 +68,7 @@ export const useUsersStore = defineStore({
                     })
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
             }
         },
         async refusalUser(user, orderId, _id) {
@@ -94,6 +95,7 @@ export const useUsersStore = defineStore({
                     })
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
             }
         },
         // Fetching type
@@ -207,6 +209,7 @@ export const useUsersStore = defineStore({
                 return this.arrayTypeResult
             } catch (error) {
                 console.log(error);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 return false
             }
         },
@@ -272,6 +275,7 @@ export const useUsersStore = defineStore({
                 return true
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 return false
             }
         },
@@ -297,6 +301,7 @@ export const useUsersStore = defineStore({
                 }
                 localStorage.setItem("all_name_instruments", JSON.stringify(allNameInstrument))
             } catch (err) {
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 console.log(err);
             }
         },
@@ -376,6 +381,7 @@ export const useUsersStore = defineStore({
 
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
             }
         },
         // Filter _id
@@ -389,9 +395,10 @@ export const useUsersStore = defineStore({
                 }
                 return true
             } catch (err) {
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 console.log(err);
+                return false
             }
-            return false
         },
         async filterNameById(_id) {
             try {
@@ -400,6 +407,7 @@ export const useUsersStore = defineStore({
                 return true
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 return false
             }
         },
@@ -410,6 +418,7 @@ export const useUsersStore = defineStore({
                 return true
             } catch (err) {
                 console.log(err);
+                ProcessingError('Возникла ошибка. Перезагрузите страницу!')
                 return false
             }
         },
