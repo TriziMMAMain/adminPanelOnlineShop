@@ -256,6 +256,79 @@ export const useUsersStore = defineStore({
                         'Тактность двигателя', 'Чехол/сумка в комплекте', 'Вес нетто'
                     ]
                     this.arrayTypeResult = arrayType
+                } else if (type === 'Бензотриммер') {
+                    arrayType = [
+                        "Класс товара",
+                        "Режущий элемент",
+                        "Объем двигателя",
+                        "Тип ручки",
+                        "Ёмкость бака",
+                        "Мощность (кВт)",
+                        "Мощность (л.с.)",
+                        "Тип двигателя",
+                        "Тактность двигателя",
+                        "Приводной вал",
+                        "Разборный вал",
+                        "Посадочный диаметр",
+                        "Ширина скашивания",
+                        "Крепление",
+                        "Внешний диаметр (дюйм)",
+                        "Толщина лески",
+                        "Регулируемая штанга",
+                        "Потребление топлива при максимальной нагрузке",
+                        "Свеча зажигания",
+                        "Наличие колес",
+                        "MAX частота вращения шпинделя",
+                        "Вес нетто",
+                        "Уровень звукового давления",
+                    ]
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                }
+                // Network
+                if (type === "Электрическая болгарка") {
+                    arrayType = [
+                        "Напряжение",
+                        "Мощность",
+                        "Диаметр диска",
+                        "Посадочный диаметр",
+                        "Число оборотов",
+                        "Электр. регулировка оборотов",
+                        "Вид кнопки включения",
+                        "Кнопка фиксации пуска",
+                        "Суперфланец",
+                        "Быстрозажимная гайка SDS",
+                        "Защита от непреднамеренного пуска",
+                        "Работа по бетону (камню)",
+                        "Подача воды",
+                        "Регулировка положения кожуха без инструмента",
+                        "Поддержание постоянных оборотов под нагрузкой",
+                        "Возможность подключения к пылесосу",
+                        "Наличие виброручки",
+                        "Длина кабеля",
+                        "Плавный пуск",
+                        "Кожух для пылеудаления",
+                        "Упаковка",
+                        "Длина инструмента",
+                        "Габариты без упаковки",
+                        "Вес нетто",
+                        "MIN число оборотов",
+                        "Тип двигателя",
+                        "Резьба шпинделя",
+                        "Диск в комплекте",
+                        "Блокировка шпинделя при заклинивании диска",
+                        "Количество положений рукоятки",
+                        "Защита от перегрева двигателя",
+                        "MAX глубина реза"
+                    ]
+                    this.arrayTypeResult = arrayType
                 } else if (type === '') {
                     arrayType = []
                     this.arrayTypeResult = arrayType
@@ -268,9 +341,24 @@ export const useUsersStore = defineStore({
 
                     this.arrayTypeResult = arrayType
                 }
-                // Network
 
                 // Pneumotool
+                if (type === "") {
+                    arrayType = []
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                } else if (type === '') {
+                    arrayType = []
+
+                    this.arrayTypeResult = arrayType
+                }
+
                 localStorage.setItem("instrument_type_this", JSON.stringify(this.arrayTypeResult))
                 return true
             } catch (err) {
