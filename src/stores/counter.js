@@ -125,6 +125,7 @@ export const useUsersStore = defineStore({
                 } else if (type === 'Сетевой инструмент') {
                     arrayType = [
                         'Высоторез',
+                        'Садовый пылесос',
                         'Измельчитель',
                         'Клеевой пистолет',
                         'Кусторез',
