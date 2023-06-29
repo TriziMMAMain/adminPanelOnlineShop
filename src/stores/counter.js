@@ -332,7 +332,8 @@ export const useUsersStore = defineStore({
                     this.arrayTypeResult = arrayType
                 } else if (type === 'Садовый пылесос') {
                     arrayType = [
-                        "Тип Мощность (кВт)",
+                        "Тип",
+                        "Мощность (кВт)",
                         "Тип Функции",
                         "Тип MAX объем воздуха",
                         "Тип Ранцевый",
