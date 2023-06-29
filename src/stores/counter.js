@@ -330,8 +330,18 @@ export const useUsersStore = defineStore({
                         "MAX глубина реза"
                     ]
                     this.arrayTypeResult = arrayType
-                } else if (type === '') {
-                    arrayType = []
+                } else if (type === 'Садовый пылесос') {
+                    arrayType = [
+                        "Тип Мощность (кВт)",
+                        "Тип Функции",
+                        "Тип MAX объем воздуха",
+                        "Тип Ранцевый",
+                        "Тип Вес нетто",
+                        "Тип Объем мусоросборника",
+                        "Тип Мусоросборник",
+                        "Тип MAX скорость воздуха",
+                        "Тип Материал крыльчатки"
+                    ]
                     this.arrayTypeResult = arrayType
                 } else if (type === '') {
                     arrayType = []
