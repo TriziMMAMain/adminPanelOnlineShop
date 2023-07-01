@@ -14,7 +14,7 @@ const toolObject = ref({})
 const productsFilterType = ref([])
 // Type
 const vSelectType = ref('')
-const vSelectTypeArray = ref(['Аккумуляторный инструмент', 'Бензоинструмент', 'Сетевой инструмент', 'Пневмоинструмент'])
+const vSelectTypeArray = ref(['Аккумуляторный инструмент', 'Бензоинструмент', 'Сетевой инструмент', 'Пневмоинструмент', 'Дизельный инструмент'])
 // TypeThis
 const vSelectTypeThis = ref('')
 const vSelectTypeThisArray = ref([])
